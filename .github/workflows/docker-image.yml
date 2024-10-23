@@ -37,3 +37,4 @@ jobs:
         tags: ${{ secrets.DOCKER_USERNAME }}/my-app:latest
 
     - run: docker run --rm ${{ secrets.DOCKER_USERNAME }}/my-app:latest pytest
+ 
