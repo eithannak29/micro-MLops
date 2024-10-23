@@ -32,7 +32,18 @@ jobs:
         file: ./tp1/Dockerfile
         push: true
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/my-app:v1.0.0
+          ${{ secrets.DOCKER_USERNAME }}/my-app:latest
           ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }}
 
-          
+    - name: Deploy to VM via SSH
+          uses: appleboy/ssh-action@v0.1.3
+          with:
+            host: 20.86.55.5
+            username: ubuntu
+            password: Supermotdepasse!42
+            port: 22
+            script: |
+              docker pull ${{ secrets.DOCKER_USERNAME }}/my-app:latest
+              docker stop my-app || true
+              docker rm my-app || true
+              docker run -d --name my-app ${{ secrets.DOCKER_USERNAME }}/my-app:latest
